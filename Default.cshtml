@@ -1,0 +1,28 @@
+﻿@using WebMatrix.WebData
+
+@{
+    Layout = "~/template/_SiteLayout.cshtml";
+    Page.Title = "Home";
+
+    var db = Database.Open("Seguros");
+    var query = "SELECT * FROM Clientes";
+    var data = db.Query(query);
+
+    var grid = new WebGrid(data, ajaxUpdateContainerId: "grid", rowsPerPage: 10);
+}
+
+<h3>Relação de Clientes</h3>
+
+<div id="grid">
+
+    @grid.GetHtml(
+        tableStyle : "table",
+        alternatingRowStyle : "alternate",
+        headerStyle : "header",
+        columns: grid.Columns(
+            grid.Column("ID", "ID"),
+            grid.Column("NOME", "NOME")
+        )           
+    )
+
+</div>

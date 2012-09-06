@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "~/template/_SiteLayout.cshtml";
+    Page.Title = "Contato";
+
+    string Nome = ""; 
+    
+    // Regra de validação
+    Validation.RequireField("Nome", "O NOME é de preenchimento obrigatório.");
+    
+    if(IsPost)
+    {
+        // Pegando o valor do campo
+        Nome = Request.Form["Nome"];
+
+        if(Validation.IsValid())
+        {
+            // Chamada do banco de dados
+            var db = Database.Open("Seguros");
+
+            // Inclui o cliente no banco
+            db.Execute("INSERT INTO Clientes (NOME) VALUES (@0)", Nome);
+
+            <p class="message-success">
+                Cliente incluído com sucesso!
+            </p>
+        }
+    }
+}
+
+<div id="Contato">
+    <fieldset>
+
+        <form method="post">
+            
+            @* Validação dos campos *@
+            @Html.ValidationSummary(excludeFieldErrors: true)
+
+            <div class="editor-label">
+                <label for="Nome">Nome</label>
+            </div>
+            <div class="editor-field">
+                <input id="Nome" name="Nome" type="text" value="@Nome" @Validation.For("Nome") />
+                @Html.ValidationMessage("Nome")
+            </div>
+                    
+            <br /><input type="submit" value="Salvar" />
+
+        </form>
+            
+    </fieldset>
+</div>
