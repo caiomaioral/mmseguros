@@ -5,12 +5,12 @@
     string Nome = ""; 
     
     // Regra de validação
-    Validation.RequireField("Nome", "O NOME é de preenchimento obrigatório.");
+    Validation.RequireField("Nome", "NOME é de preenchimento obrigatório.");
     
     if(IsPost)
     {
         // Pegando o valor do campo
-        Nome = Request.Form["Nome"];
+        Nome = Request["Nome"];
 
         if(Validation.IsValid())
         {
@@ -20,9 +20,7 @@
             // Inclui o cliente no banco
             db.Execute("INSERT INTO Clientes (NOME) VALUES (@0)", Nome);
 
-            <p class="message-success">
-                Cliente incluído com sucesso!
-            </p>
+            <p class="message-success">Cliente incluído com sucesso!</p>
         }
     }
 }
@@ -32,15 +30,17 @@
 
         <form method="post">
             
-            @* Validação dos campos *@
             @Html.ValidationSummary(excludeFieldErrors: true)
 
             <div class="editor-label">
                 <label for="Nome">Nome</label>
             </div>
             <div class="editor-field">
-                <input id="Nome" name="Nome" type="text" value="@Nome" @Validation.For("Nome") />
+                
+                <input id="Nome" name="Nome" type="text" />
+                
                 @Html.ValidationMessage("Nome")
+
             </div>
                     
             <br /><input type="submit" value="Salvar" />
